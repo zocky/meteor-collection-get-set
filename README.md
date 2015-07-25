@@ -1,10 +1,34 @@
 This package provides shorthand methods for getting and setting fields and subfields 
-on documents in your Mongo collections.
+on documents in your Mongo collections using dot notation.
+
+# Usage
+
+### .get()
+
+####`Meteor.Collection#get(query,path)`
+Find the first document that matches the `query` (a mongo query object or a document `_id`) , return the value at `path` (a dot-delimited string).
+
+If the path doesn't exist in the document, `undefined` is returned without throwing any errors. Only the root field of the path is retrieved from the database.
+
+### .set()
+#### `Meteor.Collection#set(query,path,value,update_options)`
+Set value at `path` (a dot-delimited string) to `value` on one more documents that match `query` (a mongo query object or a document `_id`). 
+
+This helps avoid overwriting whole document by forgetting to use `$set` in `.update`. It also makes life a lot easier when you only need to update one field and that field's name or path is in a variable.
+
+This constructs an object that is passed as the `$set` operator to the collection's `update` method. `update_options` is also passed, so you can use `{multi:1}` to update multiple documents.
+
+#### `Meteor.Collection#set(query,set,update_options)`
+The same as above, but with a `set` (an object) of paths and values. 
+
+This simply passes the arguments to `.update(query,{$set:set},update_options)`
+
+
 
 #Example
 ```` javascript
 // insert some data
-Places = new Meteor.collection("places");
+Places = new Meteor.Collection("places");
 Places.insert({
   _id: "zoo",
   name: "The Zoo",
