@@ -43,7 +43,7 @@ Places.insert({
 });
 
 // get some existing values
-Places.get("zoo","contact.address.postcode") === "314-159" ;
+Places.get("zoo","location.address.postcode") === "314-159" ;
 Places.get({name:"The Zoo"},"features.2.type") === "beast" ;
 
 // features.3 doesn"t exist so this will return undefined without throwing an error 
