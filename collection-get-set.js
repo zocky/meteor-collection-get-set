@@ -15,20 +15,21 @@ Meteor.Collection.prototype.set = function( q, key, optional_value, update_optio
     $set[ key ] = optional_value;
   }
   // pass to update
-  return this.update( q, { $set: $set }, opt || {} );
+  return this.update( q, { $set: $set }, update_options || {} );
 }
 
 /*
 * get one field or subfield from one document by dot notation path
 */
 
-Meteor.Collection.prototype.get = function( q, path ) {
+Meteor.Collection.prototype.get = function( q, path, find_options ) {
   //split the key by dots to get the path to the value
   //we will use this later to pass to Meteor._get
   var args = String(path).split(/[.]/);
   // we only need the root field that this path is in
-  var fields = {}; 
-  fields[args[0]] = 1; 
+  find_options = find_options ||{};
+  find_options.fields = {}; 
+  find_options.fields[args[0]] = 1; 
   // find the document
   var doc = this.findOne(q,{fields:fields});
   // if not found, we can't do anything further
